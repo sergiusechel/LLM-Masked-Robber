@@ -1,3 +1,8 @@
+'''
+Disclaimer: This tool is intended solely for academic and informational purposes. The analysis and descriptions of prompt injection techniques and related adversarial testing methods are provided to understand potential vulnerabilities in large language models (LLMs) and to advance the field of cybersecurity. Under no circumstances should the techniques described be used to exploit, manipulate, or compromise LLMs or other artificial intelligence systems outside of controlled, authorized research environments. All testing was conducted ethically, and with the aim of responsibly disclosing potential issues to improve the resilience and security of AI systems. The author does not assume any responsibility for misuse of the information presented.
+'''
+
+
 import torch
 from transformers import RobertaTokenizer, RobertaForMaskedLM
 import torch.nn.functional as F
