@@ -135,4 +135,4 @@ This script can be leveraged to create datasets for testing the robustness of la
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the Apache License Version 2.0
