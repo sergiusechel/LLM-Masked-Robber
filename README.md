@@ -1,4 +1,4 @@
-# LLM-Masked-Robber
+# LLM Masked Robber
 
 This script utilizes Facebook AI's RoBERTa model for masked language modeling to predict the top-k most likely words for masked tokens in a given sentence. It generates variations of the input sentence by filling in the masked tokens with the predicted words. Additionally, it logs the predictions and generated prompts to CSV files for further analysis.
 
