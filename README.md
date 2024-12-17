@@ -1,3 +1,5 @@
+<img src="https://github.com/sergiusechel/LLM-Masked-Robber/blob/main/images/llm_masked_robber.gif" width="400px"/>
+
 # LLM Masked Robber
 
 ## Table of Contents
