@@ -160,14 +160,6 @@ Ensure you have **RoBERTa-base** downloaded and stored locally in `roberta-base`
 
 This project is licensed under the Apache License Version 2.0
 
----
-
-## Author
-
-[Your Name or GitHub Handle]  
-
-For questions, suggestions, or collaborations, feel free to reach out or create an issue.
-
 --- 
 
 ### Acknowledgment
