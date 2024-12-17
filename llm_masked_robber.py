@@ -8,8 +8,6 @@ import torch.nn.functional as F
 import nltk
 from nltk import pos_tag
 import ssl
-nltk.download('averaged_perceptron_tagger')
-nltk.download('punkt')
 
 # Bypass SSL verification for NLTK downloads
 try:
