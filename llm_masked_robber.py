@@ -30,7 +30,7 @@ def get_user_inputs():
     masked_sentence = input("Type in your sentence and use __ to mask keywords: ")
     while True:
         try:
-            top_k_input = int(input("Enter the number of top predictions to retrieve for each masked token: "))
+            top_k_input = int(input("Enter the number of top predictions to retrieve for each masked keyword: "))
             if top_k_input <= 0:
                 raise ValueError("Top-k must be a positive integer.")
             break
@@ -53,7 +53,7 @@ def is_noun_or_verb(word):
 
 def mask_and_predict_top_k_with_probs(text, top_k=5, masked_token="__"):
     """
-    Mask tokens in text and return the top-k predicted words with probabilities,
+    Mask keywords (tokens) in text and return the top-k predicted words with probabilities,
     prioritizing nouns and verbs.
     """
     text_with_mask = text.replace(masked_token, tokenizer.mask_token)
@@ -72,10 +72,10 @@ def mask_and_predict_top_k_with_probs(text, top_k=5, masked_token="__"):
         top_k_probs, top_k_token_ids = probs.topk(top_k * 2)  # Retrieve more predictions to filter later
         top_k_tokens = [tokenizer.decode([token_id]).strip() for token_id in top_k_token_ids.tolist()]
         
-        # Filter tokens to prioritize nouns and verbs
+        # Filter keywords to prioritize nouns and verbs
         filtered_tokens = [(word, prob) for word, prob in zip(top_k_tokens, top_k_probs.tolist()) if is_noun_or_verb(word)]
         
-        # If we don't have enough valid tokens, fall back to original predictions
+        # If we don't have enough valid keywords, fall back to original predictions
         if len(filtered_tokens) < top_k:
             filtered_tokens.extend(zip(top_k_tokens, top_k_probs.tolist()))
         
@@ -86,7 +86,7 @@ def mask_and_predict_top_k_with_probs(text, top_k=5, masked_token="__"):
 
 def generate_prompts_with_predictions(text, predictions_dict, masked_token="__"):
     """
-    Generate prompts by replacing masked tokens with top predictions.
+    Generate prompts by replacing masked keywords with top predictions.
     """
     prompt_list = [text]
     for _, predictions in predictions_dict.items():
@@ -100,7 +100,7 @@ def generate_prompts_with_predictions(text, predictions_dict, masked_token="__")
 
 def save_predictions_to_file(masked_sentence, predictions_dict, prompt_variations):
     """Save predictions and generated prompts to files."""
-    with open('adversarial_prompts_masked_tokens.csv', 'a', encoding='utf-8') as f:
+    with open('adversarial_prompts_masked_keywords.csv', 'a', encoding='utf-8') as f:
         for position, predictions in predictions_dict.items():
             for word, prob in predictions:
                 f.write(f"{masked_sentence},{position},{word},{prob:.4f}\n")
@@ -113,14 +113,14 @@ def main():
     """Main function to execute the script."""
     masked_sentence, top_k_input = get_user_inputs()
     if "__" not in masked_sentence:
-        print("Error: Your sentence must contain at least one '__' token.")
+        print("Error: Your sentence must contain at least one '__' keyword.")
         return
     
     # Predict words and probabilities
     predicted_words_with_probs = mask_and_predict_top_k_with_probs(masked_sentence, top_k=top_k_input)
     
     # Print predictions
-    print(f"\nTop {top_k_input} Predictions with Probabilities for Each Masked Token:")
+    print(f"\nTop {top_k_input} Predictions with probabilities for each masked keyword:")
     for position, predictions in predicted_words_with_probs.items():
         print(f"{position}:")
         for word, prob in predictions:
@@ -128,13 +128,13 @@ def main():
     
     # Generate and print prompt variations
     prompt_variations = generate_prompts_with_predictions(masked_sentence, predicted_words_with_probs)
-    print("\nGenerated Prompts with All Predicted Words:")
+    print("\nGenerated prompts with all predicted keywords:")
     for prompt in prompt_variations:
         print(prompt)
     
     # Save outputs to files
     save_predictions_to_file(masked_sentence, predicted_words_with_probs, prompt_variations)
-    print("\nResults have been saved to 'adversarial_prompts_masked_tokens.csv' and 'adversarial_prompts.csv'.")
+    print("\nResults have been saved to 'adversarial_prompts_masked_keywords.csv' and 'adversarial_prompts.csv'.")
 
 if __name__ == "__main__":
     main()
